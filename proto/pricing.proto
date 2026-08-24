@@ -1,0 +1,29 @@
+syntax="proto3";
+
+package pricing;
+
+// The pricing service defn 
+
+// rpc CalculateFare acts like a function signature that lives on a remote server.
+service PricingService{
+   rpc CalculateFare (FareRequest) returns (FareResponse);
+}
+
+// Input payload sent from Dispatch -> Pricing 
+
+message FareRequest {
+   double pickup_lat = 1;
+   double pickup_lng = 2;
+   double dropoff_lat = 3;
+   double dropoff_lng = 4;
+   string ride_type = 5; // "Uber_X, "Uber_BLACK"
+}
+
+// Output payload returned from Pricing -> Dispatch 
+
+message FareResponse {
+   double fare_amount =1;
+   string currency = 2;
+   double distance_km = 3;
+   double surge_multiplier =4;
+}
