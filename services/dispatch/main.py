@@ -1,3 +1,4 @@
+from sqlalchemy import sql
 import sys
 import os
 import json
@@ -131,3 +132,80 @@ def request_ride(
       db.commit()
 
    return response_payload
+
+
+# 5 Start trip: Driver picks up rider
+
+@app.post("/trips/{trip_id}/start")
+def start_trip(trip_id:int, db: Session = Depends(get_db)):
+   trip = db.query(Trip).filter(Trip.id == trip_id).first()
+   if not trip:
+      raise HTTPException(status_code=404, detail="Trip not found")
+   
+   if trip.status != "MATCHED":
+      raise HTTPException(status_code=400, detail=f"Cannot start trip in status '{trip.status}'")
+
+   trip.status = "IN_PROGRESS"
+   db.commit()
+
+   return {"message": "Trip started", "trip_id": trip.id, "status": trip.status}
+
+
+# 6 COMPLETE TRIP: driver drops off rider & becomes AVAILABLE again
+
+@app.post("/trips/{trip_id}/complete")
+def complete_trip(trip_id:int, db: Session=Depends(get_db)):
+   trip = db.query(Trip).filter(Trip.id == trip_id).first()
+   if not trip:
+      raise HTTPException(status_code=404, detail="Trip not found")
+    
+   if trip.status != "IN_PROGRESS":
+      raise HTTPException(status_code=400, detail=f"Cannot complete trip in status '{trip.status}'")
+
+   trip.status = "COMPLETED"
+
+   # free up the driver
+   driver = db.query(Driver).filter(Driver.id == trip.driver_id).first()
+   if driver:
+      driver.status = "AVAILABLE"
+   
+   db.commit()
+   print(f"[Dispatch] ✅ Trip #{trip.id} COMPLETED. Driver #{driver.id} ({driver.name}) is now AVAILABLE again!")
+
+
+   return {
+      "message": "Trip completed successfully",
+      "trip_id": trip.id,
+      "status": trip.status,
+      "driver_status": driver.status if driver else None
+   }
+
+
+#7 cancel the trip
+
+@app.post("/trips/{trip_id}/cancel")
+
+def cancel_trip(trip_id: int, db:Session = Depends(get_db)):
+   trip = db.query(Trip).filter(Trip.id == trip_id).first()
+
+   if not trip:
+      raise HTTPException(status_code = 404, detail="Trip not found")
+   
+   if trip.status in ["COMPLETED", "CANCELLED"]:
+      raise HTTPException(status_code = 400, detail=f"Cannot cancel trip already '{trip.status}'")
+
+   trip.status = "CANCELLED"
+
+   driver = db.query(Driver).filter(Driver.id == trip.driver_id).first()
+   if driver:
+      driver.status = "AVAILABLE"
+   
+   db.commit()
+
+   return{
+      "message": "Trip Cancelled",
+      "trip_id": trip.id,
+      "status": trip.status
+   }
+
+   
