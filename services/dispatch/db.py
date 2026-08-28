@@ -3,13 +3,13 @@
 from sqlalchemy import null
 import os
 import datetime
-from sqlalchemy import create_engine, Column, Integer, String, DateTime, Text, Index
+from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime, Text, Index
 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 MYSQL_HOST = os.getenv("MYSQL_HOST", "localhost")
-DATABASE_URL = f"mysql+pymysql://app_user:app_password@{MYSQL_HOST}:3306/rider_driver_db"
+DATABASE_URL = os.getenv("DATABASE_URL", f"mysql+pymysql://app_user:app_password@{MYSQL_HOST}:3307/rider_driver_db")
 
 engine = create_engine(
    DATABASE_URL, 

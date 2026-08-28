@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x13proto/pricing.proto\x12\x07pricing\"r\n\x0b\x46\x61reRequest\x12\x12\n\npickup_lat\x18\x01 \x01(\x01\x12\x12\n\npickup_lng\x18\x02 \x01(\x01\x12\x13\n\x0b\x64ropoff_lat\x18\x03 \x01(\x01\x12\x13\n\x0b\x64ropoff_lng\x18\x04 \x01(\x01\x12\x11\n\tride_type\x18\x05 \x01(\t\"c\n\x0c\x46\x61reResponse\x12\x13\n\x0b\x66\x61re_amount\x18\x01 \x01(\x01\x12\x10\n\x08\x63urrency\x18\x02 \x01(\t\x12\x12\n\ndistance_km\x18\x03 \x01(\x01\x12\x18\n\x10surge_multiplier\x18\x04 \x01(\x01\x32N\n\x0ePricingService\x12<\n\rCalculateFare\x12\x14.pricing.FareRequest\x1a\x15.pricing.FareResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x13proto/pricing.proto\x12\x07pricing\"r\n\x0b\x46\x61reRequest\x12\x12\n\npickup_lat\x18\x01 \x01(\x01\x12\x12\n\npickup_lng\x18\x02 \x01(\x01\x12\x13\n\x0b\x64ropoff_lat\x18\x03 \x01(\x01\x12\x13\n\x0b\x64ropoff_lng\x18\x04 \x01(\x01\x12\x11\n\tride_type\x18\x05 \x01(\t\"d\n\x0c\x46\x61reResponse\x12\x13\n\x0b\x66\x61re_amount\x18\x01 \x01(\x01\x12\x10\n\x08\x63urrency\x18\x02 \x01(\t\x12\x13\n\x0b\x64istance_km\x18\x03 \x01(\x01\x12\x18\n\x10surge_multiplier\x18\x04 \x01(\x01\x32N\n\x0ePricingService\x12<\n\rCalculateFare\x12\x14.pricing.FareRequest\x1a\x15.pricing.FareResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -34,7 +34,7 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_FAREREQUEST']._serialized_start=32
   _globals['_FAREREQUEST']._serialized_end=146
   _globals['_FARERESPONSE']._serialized_start=148
-  _globals['_FARERESPONSE']._serialized_end=247
-  _globals['_PRICINGSERVICE']._serialized_start=249
-  _globals['_PRICINGSERVICE']._serialized_end=327
+  _globals['_FARERESPONSE']._serialized_end=248
+  _globals['_PRICINGSERVICE']._serialized_start=250
+  _globals['_PRICINGSERVICE']._serialized_end=328
 # @@protoc_insertion_point(module_scope)

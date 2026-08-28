@@ -43,7 +43,7 @@ def request_ride(
    idempotency_key: Optional[str] = Header(None, alias="Idempotency-Key"),
    db: Session = Depends(get_db)
 ):
-   print(f"\[Dispatch Gateway] Received Ride Request for Rider: {request.rider_id}")
+   print(f"\n[Dispatch Gateway] Received Ride Request for Rider: {request.rider_id}")
 
    #1 IDEMPOTENCY CHECK
 
@@ -114,7 +114,7 @@ def request_ride(
       "fare": {
          "amount": new_trip.fare_amount,
          "currency": fare_response.currency,
-         "distanc_km": fare_response.distance_km,
+         "distance_km": fare_response.distance_km,
          "surge_multiplier": fare_response.surge_multiplier
       }
    }
