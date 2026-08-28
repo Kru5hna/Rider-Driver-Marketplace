@@ -1,24 +1,19 @@
-from services.dispatch.db import Trip
-from proto import pricing_pb2_grpc, pricing_pb2
-import grpc
-from fastapi import HTTPException
-from services.matching.engine import find_and_reserve_driver
-from services.dispatch.db import IdempotencyKey
-from fastapi import Depends
-from fastapi import Header
-from typing import Optional
-from pydantic import BaseModel
-from services.dispatch.db import SessionLocal
-import os
 import sys
+import os
 import json
+import grpc
+from fastapi import FastAPI, HTTPException, Depends, Header
+from pydantic import BaseModel
+from typing import Optional
 from sqlalchemy.orm import Session
 
-# Adding project root to sys.path so python can resolve imports 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__),"../../")))
+# Add project root to sys.path so Python can resolve imports
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 
-from fastapi import FastAPI
-from services.dispatch.db import init_db
+from proto import pricing_pb2
+from proto import pricing_pb2_grpc
+from services.dispatch.db import SessionLocal, init_db, Trip, Driver, IdempotencyKey
+from services.matching.engine import find_and_reserve_driver
 
 app = FastAPI(title="Dispatch Service")
 @app.on_event("startup")
@@ -111,7 +106,7 @@ def request_ride(
       "message": "Trip successfully matched and created",
       "trip_id": new_trip.id,
       "status": new_trip.status,
-      driver: {
+      "driver": {
          "id": driver.id,
          "name": driver.name,
          "location": {"lat": driver.lat, "lng": driver.lng}
